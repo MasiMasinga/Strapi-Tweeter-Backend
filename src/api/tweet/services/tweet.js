@@ -51,9 +51,7 @@ module.exports = createCoreService('api::tweet.tweet', ({ strapi }) => ({
      */
     async updateTweet(id, data) {
         const updatedTweet = await strapi.query('api::tweet.tweet').update({
-            where: {
-                id,
-            },
+            where: { id },
             data: {
                 tweet_text: data.tweet_text,
                 tweet_url: data.tweet_url,
@@ -69,9 +67,7 @@ module.exports = createCoreService('api::tweet.tweet', ({ strapi }) => ({
      */
     async deleteTweet(id) {
         const deletedTweet = await strapi.query('api::tweet.tweet').delete({
-            where: {
-                id,
-            }
+            where: { id }
         });
 
         return deletedTweet;
