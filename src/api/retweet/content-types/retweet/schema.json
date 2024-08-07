@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "retweets",
+  "info": {
+    "singularName": "retweet",
+    "pluralName": "retweets",
+    "displayName": "Retweet"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "comment": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::comment.comment",
+      "inversedBy": "retweets"
+    },
+    "tweet": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tweet.tweet",
+      "inversedBy": "retweets"
+    }
+  }
+}
