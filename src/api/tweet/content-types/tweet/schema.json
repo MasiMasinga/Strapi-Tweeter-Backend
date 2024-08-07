@@ -4,7 +4,8 @@
   "info": {
     "singularName": "tweet",
     "pluralName": "tweets",
-    "displayName": "Tweet"
+    "displayName": "Tweet",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -15,14 +16,15 @@
       "type": "string"
     },
     "tweet_url": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": true
+      ]
     },
     "likes": {
       "type": "relation",
@@ -35,6 +37,12 @@
       "relation": "oneToMany",
       "target": "api::retweet.retweet",
       "mappedBy": "tweet"
+    },
+    "comments": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::comment.comment",
+      "inversedBy": "tweets"
     }
   }
 }

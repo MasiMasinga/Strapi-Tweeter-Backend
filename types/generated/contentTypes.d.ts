@@ -814,6 +814,11 @@ export interface ApiCommentComment extends Schema.CollectionType {
       'oneToMany',
       'api::retweet.retweet'
     >;
+    tweets: Attribute.Relation<
+      'api::comment.comment',
+      'manyToMany',
+      'api::tweet.tweet'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -939,6 +944,7 @@ export interface ApiTweetTweet extends Schema.CollectionType {
     singularName: 'tweet';
     pluralName: 'tweets';
     displayName: 'Tweet';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -955,6 +961,11 @@ export interface ApiTweetTweet extends Schema.CollectionType {
       'api::tweet.tweet',
       'oneToMany',
       'api::retweet.retweet'
+    >;
+    comments: Attribute.Relation<
+      'api::tweet.tweet',
+      'manyToMany',
+      'api::comment.comment'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
