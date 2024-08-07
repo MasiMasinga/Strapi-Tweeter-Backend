@@ -1,0 +1,25 @@
+
+version: '3'
+
+services:
+  strapi:
+    image: strapi-tweeter-backend
+    build:
+      context: .
+    container_name: strapi-tweeter-backend
+    environment:
+      - DATABASE_CLIENT=sqlite
+      - DATABASE_FILENAME=/srv/app/database/data.db
+      - NODE_ENV=development
+    volumes:
+      - ./app:/srv/app
+      - ./app/database:/srv/app/database
+    ports:
+      - "1337:1337"
+    restart: unless-stopped
+    networks:
+      - strapi-network
+
+networks:
+  strapi-network:
+    driver: bridge
