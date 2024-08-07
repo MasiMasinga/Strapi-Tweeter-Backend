@@ -590,6 +590,53 @@ export interface PluginContentReleasesReleaseAction
   };
 }
 
+export interface PluginI18NLocale extends Schema.CollectionType {
+  collectionName: 'i18n_locale';
+  info: {
+    singularName: 'locale';
+    pluralName: 'locales';
+    collectionName: 'locales';
+    displayName: 'Locale';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.SetMinMax<
+        {
+          min: 1;
+          max: 50;
+        },
+        number
+      >;
+    code: Attribute.String & Attribute.Unique;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::i18n.locale',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::i18n.locale',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface PluginUsersPermissionsPermission
   extends Schema.CollectionType {
   collectionName: 'up_permissions';
@@ -741,46 +788,196 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
-export interface PluginI18NLocale extends Schema.CollectionType {
-  collectionName: 'i18n_locale';
+export interface ApiCommentComment extends Schema.CollectionType {
+  collectionName: 'comments';
   info: {
-    singularName: 'locale';
-    pluralName: 'locales';
-    collectionName: 'locales';
-    displayName: 'Locale';
-    description: '';
+    singularName: 'comment';
+    pluralName: 'comments';
+    displayName: 'Comment';
   };
   options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    'content-manager': {
-      visible: false;
-    };
-    'content-type-builder': {
-      visible: false;
-    };
+    draftAndPublish: true;
   };
   attributes: {
-    name: Attribute.String &
-      Attribute.SetMinMax<
-        {
-          min: 1;
-          max: 50;
-        },
-        number
-      >;
-    code: Attribute.String & Attribute.Unique;
+    comment_text: Attribute.String;
+    comment_url: Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    likes: Attribute.Relation<
+      'api::comment.comment',
+      'oneToMany',
+      'api::like.like'
+    >;
+    retweets: Attribute.Relation<
+      'api::comment.comment',
+      'oneToMany',
+      'api::retweet.retweet'
+    >;
+    tweets: Attribute.Relation<
+      'api::comment.comment',
+      'manyToMany',
+      'api::tweet.tweet'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'plugin::i18n.locale',
+      'api::comment.comment',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'plugin::i18n.locale',
+      'api::comment.comment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiLikeLike extends Schema.CollectionType {
+  collectionName: 'likes';
+  info: {
+    singularName: 'like';
+    pluralName: 'likes';
+    displayName: 'Like';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    comment: Attribute.Relation<
+      'api::like.like',
+      'manyToOne',
+      'api::comment.comment'
+    >;
+    tweet: Attribute.Relation<
+      'api::like.like',
+      'manyToOne',
+      'api::tweet.tweet'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::like.like', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::like.like', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiMediaMedia extends Schema.CollectionType {
+  collectionName: 'medias';
+  info: {
+    singularName: 'media';
+    pluralName: 'medias';
+    displayName: 'Media';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    url: Attribute.Media<'images' | 'files' | 'videos' | 'audios', true>;
+    type: Attribute.Enumeration<['file', 'image']>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::media.media',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::media.media',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiRetweetRetweet extends Schema.CollectionType {
+  collectionName: 'retweets';
+  info: {
+    singularName: 'retweet';
+    pluralName: 'retweets';
+    displayName: 'Retweet';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    comment: Attribute.Relation<
+      'api::retweet.retweet',
+      'manyToOne',
+      'api::comment.comment'
+    >;
+    tweet: Attribute.Relation<
+      'api::retweet.retweet',
+      'manyToOne',
+      'api::tweet.tweet'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::retweet.retweet',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::retweet.retweet',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTweetTweet extends Schema.CollectionType {
+  collectionName: 'tweets';
+  info: {
+    singularName: 'tweet';
+    pluralName: 'tweets';
+    displayName: 'Tweet';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    tweet_text: Attribute.String;
+    tweet_url: Attribute.Media<'images' | 'files' | 'videos' | 'audios', true>;
+    likes: Attribute.Relation<
+      'api::tweet.tweet',
+      'oneToMany',
+      'api::like.like'
+    >;
+    retweets: Attribute.Relation<
+      'api::tweet.tweet',
+      'oneToMany',
+      'api::retweet.retweet'
+    >;
+    comments: Attribute.Relation<
+      'api::tweet.tweet',
+      'manyToMany',
+      'api::comment.comment'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::tweet.tweet',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::tweet.tweet',
       'oneToOne',
       'admin::user'
     > &
@@ -802,10 +999,15 @@ declare module '@strapi/types' {
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
+      'plugin::i18n.locale': PluginI18NLocale;
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
-      'plugin::i18n.locale': PluginI18NLocale;
+      'api::comment.comment': ApiCommentComment;
+      'api::like.like': ApiLikeLike;
+      'api::media.media': ApiMediaMedia;
+      'api::retweet.retweet': ApiRetweetRetweet;
+      'api::tweet.tweet': ApiTweetTweet;
     }
   }
 }
