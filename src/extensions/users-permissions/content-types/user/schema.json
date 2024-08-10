@@ -66,17 +66,17 @@
       "inversedBy": "users",
       "configurable": false
     },
+    "followers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::follow.follow",
+      "mappedBy": "follower"
+    },
     "follows": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::follow.follow",
-      "mappedBy": "follow"
-    },
-    "follow": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::follow.follow",
-      "inversedBy": "followers"
+      "mappedBy": "following"
     }
   }
 }

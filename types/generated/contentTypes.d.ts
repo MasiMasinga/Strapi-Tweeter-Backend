@@ -771,14 +771,14 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
-    follows: Attribute.Relation<
+    followers: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToMany',
       'api::follow.follow'
     >;
-    follow: Attribute.Relation<
+    follows: Attribute.Relation<
       'plugin::users-permissions.user',
-      'manyToOne',
+      'oneToMany',
       'api::follow.follow'
     >;
     createdAt: Attribute.DateTime;
@@ -853,19 +853,20 @@ export interface ApiFollowFollow extends Schema.CollectionType {
     singularName: 'follow';
     pluralName: 'follows';
     displayName: 'Follow';
+    description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    follow: Attribute.Relation<
+    follower: Attribute.Relation<
       'api::follow.follow',
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    followers: Attribute.Relation<
+    following: Attribute.Relation<
       'api::follow.follow',
-      'oneToMany',
+      'manyToOne',
       'plugin::users-permissions.user'
     >;
     createdAt: Attribute.DateTime;
