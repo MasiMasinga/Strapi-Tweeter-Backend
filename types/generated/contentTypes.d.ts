@@ -771,6 +771,16 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
+    follows: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::follow.follow'
+    >;
+    follow: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToOne',
+      'api::follow.follow'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -830,6 +840,45 @@ export interface ApiCommentComment extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::comment.comment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiFollowFollow extends Schema.CollectionType {
+  collectionName: 'follows';
+  info: {
+    singularName: 'follow';
+    pluralName: 'follows';
+    displayName: 'Follow';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    follow: Attribute.Relation<
+      'api::follow.follow',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    followers: Attribute.Relation<
+      'api::follow.follow',
+      'oneToMany',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::follow.follow',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::follow.follow',
       'oneToOne',
       'admin::user'
     > &
@@ -1004,6 +1053,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'api::comment.comment': ApiCommentComment;
+      'api::follow.follow': ApiFollowFollow;
       'api::like.like': ApiLikeLike;
       'api::media.media': ApiMediaMedia;
       'api::retweet.retweet': ApiRetweetRetweet;
