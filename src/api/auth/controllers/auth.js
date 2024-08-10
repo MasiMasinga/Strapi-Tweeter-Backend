@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * user controller
+ * auth controller
  */
 
 module.exports = {

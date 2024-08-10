@@ -1,24 +1,24 @@
 'use strict';
 
 /**
- * auth router
+ * user router
  */
 
 module.exports = {
     routes: [
         {
-            method: 'POST',
-            path: '/auth/register',
-            handler: 'auth.register',
+            method: 'GET',
+            path: '/user',
+            handler: 'user.get',
             config: {
               policies: [],
               middlewares: [],
             },
         },
         {
-            method: 'POST',
-            path: '/auth/login',
-            handler: 'auth.login',
+            method: 'GET',
+            path: '/user/search',
+            handler: 'user.search',
             config: {
               policies: [],
               middlewares: [],
