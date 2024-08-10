@@ -4,6 +4,25 @@
  * follow router
  */
 
-const { createCoreRouter } = require('@strapi/strapi').factories;
-
-module.exports = createCoreRouter('api::follow.follow');
+module.exports = {
+    routes: [
+        {
+            method: 'POST',
+            path: '/follow',
+            handler: 'follow.createFollow',
+            config: {
+                policies: [],
+                middlewares: [],
+            },
+        },
+        {
+            method: 'DELETE',
+            path: '/follow',
+            handler: 'follow.deleteFollow',
+            config: {
+                policies: [],
+                middlewares: [],
+            },
+        },
+    ],
+};
